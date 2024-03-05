@@ -1,0 +1,16 @@
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.book-form {
+  visibility: hidden;
+}
+
+.book-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 24px;
+}
