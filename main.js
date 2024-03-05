@@ -8,7 +8,7 @@ function createUsersBook() {
   let title = document.querySelector("#title").value;
   let author = document.querySelector("#author").value;
   let pages = document.querySelector("#pages").value;
-  let bookStatus = document.querySelector("#status").value;
+  let bookStatus = document.querySelector("#status").checked;
 
   const book = new Book(title, author, pages, bookStatus);
   return book;
@@ -23,11 +23,14 @@ function displayBooksInfo() {
   booksDisplay.innerHTML = "";
   booksDisplay.innerHTML += "<table>";
   myLibrary.forEach((book) => {
-    let dataId = myLibrary.length;
+    let dataId = myLibrary.length - 1;
     booksDisplay.innerHTML += `<div class="book-field" data-id="${dataId}"><td><p> ${book.info()} </p></td><button type="button" class="btn-remove-book">REMOVE</button></div>`;
     booksDisplay.innerHTML += "<hr>";
   });
   booksDisplay.innerHTML += "</table>";
+
+  //Add the events to remove book buttons
+  addRemoveEvents();
 }
 
 function Book(title, author, pages, readStatus) {
@@ -61,10 +64,12 @@ btnAddBook.addEventListener("click", (event) => {
   displayBooksInfo();
 });
 
-const btnRemove = document.querySelectorAll(".btn-remove-book");
-btnRemove.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    myLibrary.splice(event.target.dataset.id, 1);
-    displayBooksInfo();
+function addRemoveEvents() {
+  const btnRemove = document.querySelectorAll(".btn-remove-book");
+  btnRemove.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      myLibrary.splice(event.target.dataset.id, 1);
+      displayBooksInfo();
+    });
   });
-});
+}
