@@ -27,6 +27,7 @@ p {
   margin: 30px auto;
   padding: 6px;
   border-radius: 10px;
+  background-color: rgb(173, 173, 248);
 }
 
 .btn-add-book {

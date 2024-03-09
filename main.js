@@ -1,75 +1,122 @@
-const myLibrary = [
-  //   new Book("The Hobbit", "J.R.R. Tolkien", 366, true),
-  //   new Book("The Last Wish", "Andrzej Sapkowski", 400, true),
-  //   new Book("The Call of Cthulhu", "H.P. Lovecraft", 43, false),
-];
+class Library {
+  constructor() {
+    this._books = [];
+  }
 
-function createUsersBook() {
-  let title = document.querySelector("#title").value;
-  let author = document.querySelector("#author").value;
-  let pages = document.querySelector("#pages").value;
-  let bookStatus = document.querySelector("#status").checked;
+  get books() {
+    return this._books;
+  }
 
-  const book = new Book(title, author, pages, bookStatus);
-  return book;
+  addBookToLibrary(book) {
+    this._books.push(book);
+  }
 }
 
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-}
+class Book {
+  constructor() {
+    this._title = document.querySelector("#title").value;
+    this._author = document.querySelector("#author").value;
+    this._pages = document.querySelector("#pages").value;
+    this._status = document.querySelector("#status").checked;
+  }
 
-function displayBooksInfo() {
-  let booksDisplay = document.querySelector(".books-display");
-  booksDisplay.innerHTML = "";
-  booksDisplay.innerHTML += "<table>";
-  myLibrary.forEach((book) => {
-    let dataId = myLibrary.length - 1;
-    booksDisplay.innerHTML += `<div class="book-field" data-id="${dataId}"><td><p> ${book.info()} </p></td><button type="button" class="btn-remove-book">REMOVE</button></div>`;
-    booksDisplay.innerHTML += "<hr>";
-  });
-  booksDisplay.innerHTML += "</table>";
+  // Getter and setters
+  get title() {
+    return this._title;
+  }
 
-  //Add the events to remove book buttons
-  addRemoveEvents();
-}
+  set title(title) {
+    this._title = title;
+  }
 
-function Book(title, author, pages, readStatus) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.readStatus = readStatus;
+  get author() {
+    return this._author;
+  }
 
-  this.info = function () {
+  set author(author) {
+    this._author = author;
+  }
+
+  get pages() {
+    return this._pages;
+  }
+
+  set pages(pages) {
+    this._pages = pages;
+  }
+
+  get status() {
+    return this._status;
+  }
+
+  set status(status) {
+    this._status = status;
+  }
+
+  info() {
+    // Title by Author, 123 pages | ✓
     let info =
       this.title + " by " + this.author + ", " + this.pages + " pages | ";
 
-    this.readStatus ? (info += "✓") : (info += "𐄂");
+    this.status ? (info += "✓") : (info += "𐄂");
     return info;
-  };
+  }
 }
 
-// Show form on click
-const btnShowForm = document.querySelector(".btn_show_form");
-btnShowForm.addEventListener("click", () => {
-  const addNewBookForm = document.querySelector(".book-form");
-  addNewBookForm.style.visibility = "visible";
-});
+class displayConttroller {
+  constructor() {
+    this.showLibrary();
+    this.addAddBookListener();
+  }
 
-// Add a book from the form to the library
-const btnAddBook = document.querySelector(".btn-add-book");
-btnAddBook.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  addBookToLibrary(createUsersBook());
-  displayBooksInfo();
-});
-
-function addRemoveEvents() {
-  const btnRemove = document.querySelectorAll(".btn-remove-book");
-  btnRemove.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      myLibrary.splice(event.target.dataset.id, 1);
-      displayBooksInfo();
+  displayBooksInfo() {
+    let booksDisplay = document.querySelector(".books-display");
+    booksDisplay.innerHTML = "";
+    booksDisplay.innerHTML += "<table>";
+    library.books.forEach((book) => {
+      let dataId = library.books.length - 1;
+      booksDisplay.innerHTML += `<div class="book-field" data-id="${dataId}"><td><p> ${book.info()} </p></td><button type="button" class="btn-remove-book">REMOVE</button></div>`;
+      booksDisplay.innerHTML += "<hr>";
     });
-  });
+    booksDisplay.innerHTML += "</table>";
+
+    this.showLibrary();
+  }
+
+  addShowFormListener() {
+    const btnShowForm = document.querySelector(".btn_show_form");
+    btnShowForm.addEventListener("click", () => {
+      const addNewBookForm = document.querySelector(".book-form");
+      addNewBookForm.style.visibility = "visible";
+    });
+  }
+
+  addAddBookListener() {
+    const btnAddBook = document.querySelector(".btn-add-book");
+    btnAddBook.addEventListener("click", (event) => {
+      event.preventDefault();
+      let book = new Book();
+      library.addBookToLibrary(book);
+      this.displayBooksInfo();
+    });
+  }
+
+  addRemoveBookListener() {
+    const btnRemove = document.querySelectorAll(".btn-remove-book");
+    btnRemove.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        library.books.splice(event.target.dataset.id, 1);
+        this.displayBooksInfo();
+      });
+    });
+  }
+
+  showLibrary() {
+    this.addShowFormListener();
+    this.addRemoveBookListener();
+  }
 }
+
+// Main
+const library = new Library();
+const displayController = new displayConttroller();
